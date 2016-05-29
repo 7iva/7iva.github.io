@@ -9,7 +9,7 @@
     </style>
   </head>
   <body>
-    <canvas id="myCanvas" width="578" height="200"></canvas>
+    <canvas id="myCanvas" width="600" height="600"></canvas>
     <script>
       var canvas = document.getElementById('myCanvas');
       var context = canvas.getContext('2d');
@@ -17,6 +17,11 @@
       context.beginPath();
       context.moveTo(100, 150);
       context.lineTo(450, 50);
+      context.stroke();
+
+      context.beginPath();
+      context.moveTo(500, 100);
+      context.lineTo(150, 500);
       context.stroke();
     </script>
   </body>
