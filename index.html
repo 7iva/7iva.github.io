@@ -8,10 +8,10 @@
       }
     </style>
   </head>
-  <body>
+  <body background="bug_kumo_ito.png">
 		<canvas id="myCanvas" width="600" height="600"></canvas>
 		<script>
-			var cs       = document.getElementById('myCanvas'),
+			var cs   = document.getElementById('myCanvas'),
 			ctx      = cs.getContext('2d'),
 			csWidth  = cs.width,
 			csHeight = cs.height,
@@ -21,7 +21,7 @@
 			};
 			// 線の基本スタイル
 			ctx.strokeStyle = '#666';
-			ctx.lineWidth = 10;
+			ctx.lineWidth = 5;
 
 			var drawHorizontalLineAnim = function() {
 			var beginPos = 0,  // スタート位置
