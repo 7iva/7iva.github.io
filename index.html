@@ -1,63 +1,145 @@
-<!DOCTYPE HTML>
-<html>
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+< !DOCTYPE html>
+<html lang="ja">
   <head>
-    <style>
-      body {
-        margin: 0px;
-        padding: 0px;
-      }
+    <meta charset="utf-8" />
+    <title>Canvas tutorial template</title>
+    <script type="text/javascript">
+    const NUM = 500;
+    const WIDTH = 640;
+    const HEIGHT = 480;
+    var speedX = new Array(NUM);
+    var speedY = new Array(NUM);
+    var locX = new Array(NUM);
+    var locY = new Array(NUM);
+    var radius = new Array(NUM);
+    var r =  new Array(NUM);
+    var g =  new Array(NUM);
+    var b =  new Array(NUM);
+    var ctx;
+ 
+    function init(){
+    var canvas = document.getElementById('tutorial');
+        if (canvas.getContext){
+            ctx = canvas.getContext('2d');
+        for(var i = 0; i < NUM; i++){
+        speedX[i] = Math.random() * 8.0 - 4.0;
+        speedY[i] = Math.random() * 8.0 - 4.0;
+        locX[i] = WIDTH / 2;
+        locY[i] = HEIGHT / 2;
+        radius[i] = Math.random() * 8.0 + 1.0;
+        r[i] = Math.floor(Math.random() * 64);
+        g[i] = Math.floor(Math.random() * 64);
+        b[i] = Math.floor(Math.random() * 64);
+        }
+        setInterval(draw, 33);
+    }
+    }
+ 
+    function draw(){
+    ctx.globalCompositeOperation = "source-over";
+    ctx.fillStyle = "rgba(8,8,12,.1)";
+    ctx.fillRect(0, 0, WIDTH, HEIGHT);
+    ctx.globalCompositeOperation = "lighter";
+ 
+    for(var i = 0; i < NUM; i++){
+        //位置を更新
+        locX[i] += speedX[i];
+        locY[i] += speedY[i];
+        
+        if(locX[i] < 0 || locX[i] > WIDTH){
+        speedX[i] *= -1.0;
+        }
+ 
+        if(locY[i] < 0 || locY[i] > HEIGHT){
+        speedY[i] *= -1.0;
+        }
+        
+        //更新した座標で円を描く
+        ctx.beginPath();
+        ctx.fillStyle = 'rgb(' + r[i] + ',' + g[i] + ',' + b[i] + ')';
+            ctx.arc(locX[i], locY[i], radius[i], 0, Math.PI*2.0, true);
+            ctx.fill();
+    }
+    }
+    </script>
+    <style type="text/css">
+      canvas { background-color:#000; border: 1px solid #999; }
     </style>
   </head>
-  <body>
-    <canvas id="myCanvas" width="600" height="600"></canvas>
-    <script>
-var sun = new Image();
-var moon = new Image();
-var earth = new Image();
-function init(){
-  sun.src = 'https://mdn.mozillademos.org/files/1456/Canvas_sun.png';
-  moon.src = 'https://mdn.mozillademos.org/files/1443/Canvas_moon.png';
-  earth.src = 'https://mdn.mozillademos.org/files/1429/Canvas_earth.png';
-  window.requestAnimationFrame(draw);
-}
-
-function draw() {
-  var ctx = document.getElementById('canvas').getContext('2d');
-
-  ctx.globalCompositeOperation = 'destination-over';
-  ctx.clearRect(0,0,300,300); // clear canvas
-
-  ctx.fillStyle = 'rgba(0,0,0,0.4)';
-  ctx.strokeStyle = 'rgba(0,153,255,0.4)';
-  ctx.save();
-  ctx.translate(150,150);
-
-  // Earth
-  var time = new Date();
-  ctx.rotate( ((2*Math.PI)/60)*time.getSeconds() + ((2*Math.PI)/60000)*time.getMilliseconds() );
-  ctx.translate(105,0);
-  ctx.fillRect(0,-12,50,24); // Shadow
-  ctx.drawImage(earth,-12,-12);
-
-  // Moon
-  ctx.save();
-  ctx.rotate( ((2*Math.PI)/6)*time.getSeconds() + ((2*Math.PI)/6000)*time.getMilliseconds() );
-  ctx.translate(0,28.5);
-  ctx.drawImage(moon,-3.5,-3.5);
-  ctx.restore();
-
-  ctx.restore();
-  
-  ctx.beginPath();
-  ctx.arc(150,150,105,0,Math.PI*2,false); // Earth orbit
-  ctx.stroke();
- 
-  ctx.drawImage(sun,0,0,300,300);
-
-  window.requestAnimationFrame(draw);
-}
-
-init();
-    </script>
+  <body onload="init();">
+    <canvas id="tutorial" width="640" height="480"></canvas>
   </body>
-</html>     
+</html>
