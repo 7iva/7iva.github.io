@@ -9,64 +9,46 @@
     </style>
   </head>
   <body>
-    <canvas id="myCanvas" width="578" height="200"></canvas>
-    <script>
-      window.requestAnimFrame = (function(callback) {
-        return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
-        function(callback) {
-          window.setTimeout(callback, 1000 / 60);
-        };
-      })();
+		<canvas id="myCanvas" width="300" height="200"></canvas>
+		<script>
+			var cs       = document.getElementById('myCanvas'),
+			ctx      = cs.getContext('2d'),
+			csWidth  = cs.width,
+			csHeight = cs.height,
+			center   = {
+      x: csWidth / 2,
+      y: csHeight / 2
+			};
+			// 線の基本スタイル
+			ctx.strokeStyle = '#666';
+			ctx.lineWidth = 10;
 
-      function drawRectangle(myRectangle, context) {
-        context.beginPath();
-        context.rect(myRectangle.x, myRectangle.y, myRectangle.width, myRectangle.height);
-        context.fillStyle = '#8ED6FF';
-        context.fill();
-        context.lineWidth = myRectangle.borderWidth;
-        context.strokeStyle = 'black';
-        context.stroke();
-      }
-      function animate(myRectangle, canvas, context, startTime) {
-        // update
-        var time = (new Date()).getTime() - startTime;
-
-        var linearSpeed = 100;
-        // pixels / second
-        var newX = linearSpeed * time / 1000;
-
-        if(newX < canvas.width - myRectangle.width - myRectangle.borderWidth / 2) {
-          myRectangle.x = newX;
-        }
-
-        // clear
-        context.clearRect(0, 0, canvas.width, canvas.height);
-
-        drawRectangle(myRectangle, context);
-
-        // request new frame
-        requestAnimFrame(function() {
-          animate(myRectangle, canvas, context, startTime);
-        });
-      }
-      var canvas = document.getElementById('myCanvas');
-      var context = canvas.getContext('2d');
-
-      var myRectangle = {
-        x: 0,
-        y: 75,
-        width: 100,
-        height: 50,
-        borderWidth: 5
+			var drawHorizontalLineAnim = function() {
+			var beginPos = 0,  // スタート位置
+      movePos  = beginPos,  // 移動位置（現在位置）
+      addVal   = 10,  // 加算量
+      endPos   = csWidth - 10,  // 終了位置
+      isAnim   = function() {  // アニメーションを終了する条件
+        return (movePos < endPos);
       };
 
-      drawRectangle(myRectangle, context);
+		  var render = function() {
+				ctx.beginPath();
+				ctx.moveTo(beginPos, center.y);
+				ctx.lineTo(movePos, center.y);
+				ctx.closePath();
+				ctx.stroke();
 
-      // wait one second before starting animation
-      setTimeout(function() {
-        var startTime = (new Date()).getTime();
-        animate(myRectangle, canvas, context, startTime);
-      }, 1000);
+				if (isAnim() === true) {
+					movePos += addVal;
+					// ↑のaddで終了点を超えることがあるため上限を決める
+					movePos = (isAnim() === false) ? endPos : movePos;
+					requestAnimationFrame(render)
+    		}
+  		};
+			render();
+		};
+		drawHorizontalLineAnim();
     </script>
   </body>
 </html>      
